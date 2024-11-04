@@ -1,10 +1,31 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Header from "./Header"
 
 import "./styles.css"
 import ProductCard from './ProductCard'
 
 export default function App() {
+
+  const [isNavbarOpened, setNavBarOpen] = useState(false);
+
+  useEffect(()=>{
+
+    const syncNavbar = ()=>{
+      if (window.innerWidth >= 992) {
+        setNavBarOpen(true);
+      } else {
+        setNavBarOpen(false);
+      }
+    }
+
+    // when the window is being resized
+    window.addEventListener("resize", syncNavbar);
+
+    return () => {
+      window.removeEventListener("resize", syncNavbar);
+    }
+
+  }, []);  // the effect function is only ran once when the component is mounted
 
   const handleNavButtonClick = () => {
     // if (isNavbarOpened){
@@ -17,7 +38,7 @@ export default function App() {
     setNavBarOpen(!isNavbarOpened);
   }
 
-  const [isNavbarOpened, setNavBarOpen] = useState(false);
+
 
   return (
     <>
