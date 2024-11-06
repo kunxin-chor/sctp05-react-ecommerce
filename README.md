@@ -1,8 +1,18 @@
-# sctp05-react-ecommerce
+Here are the differences between the branch `04-navbar` and the branch `03-product-card`:
 
-To create this project, in the terminal, type in:
-```
-npm create vite@latest ./
-```
+1. **src/App.jsx**
+   ```diff
+   - import React from 'react'
+   + import React, {useState} from 'react'
 
-So that it's easier to deploy the project later on, we must make sure the React application is in the project root directory
+   + const handleNavButtonClick = () => {
+   +   setNavBarOpen(!isNavbarOpened);
+   + }
+   +
+   + const [isNavbarOpened, setNavBarOpen] = useState(false);
+
+   + onClick={handleNavButtonClick}
+
+   - <div className="collapse navbar-collapse" id="navbarNav">
+   + <div className={`collapse navbar-collapse ${isNavbarOpened ? "show" : ""  }`} id="navbarNav">
+   ```
