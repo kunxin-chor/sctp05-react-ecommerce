@@ -1,8 +1,25 @@
-# sctp05-react-ecommerce
+Here are the differences between the branch `05-useEffect` and the branch `04-navbar`:
 
-To create this project, in the terminal, type in:
-```
-npm create vite@latest ./
-```
+1. **src/App.jsx**
+   ```diff
+   - import React, {useState} from 'react'
+   + import React, {useState, useEffect} from 'react'
 
-So that it's easier to deploy the project later on, we must make sure the React application is in the project root directory
+   + const [isNavbarOpened, setNavBarOpen] = useState(false);
+
+   + useEffect(() => {
+   +   const syncNavbar = () => {
+   +     if (window.innerWidth >= 992) {
+   +       setNavBarOpen(true);
+   +     } else {
+   +       setNavBarOpen(false);
+   +     }
+   +   }
+   +   window.addEventListener("resize", syncNavbar);
+   +   return () => {
+   +     window.removeEventListener("resize", syncNavbar);
+   +   }
+   + }, []);  // the effect function is only run once when the component is mounted
+
+   - const [isNavbarOpened, setNavBarOpen] = useState(false);
+   ```
