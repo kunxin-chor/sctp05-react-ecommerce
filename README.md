@@ -1,8 +1,18 @@
-# sctp05-react-ecommerce
++ import React from 'react'
 
-To create this project, in the terminal, type in:
-```
-npm create vite@latest ./
-```
-
-So that it's easier to deploy the project later on, we must make sure the React application is in the project root directory
++ export default function ProductCard(props) {
++   return (
++     <div className="card">
++       <img
++         src={props.imageUrl}
++         className="card-img-top"
++         alt={props.productName}
++       />
++       <div className="card-body">
++         <h5 className="card-title">{props.productName}</h5>
++         <p className="card-text">{props.price}</p>
++         <a href="#" className="btn btn-success">Add to Cart</a>
++       </div>
++     </div>
++   )
++ }
