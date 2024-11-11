@@ -4,8 +4,13 @@ import { Formik, Field, Form } from 'formik';
 import axios from 'axios';
 import * as Yup from 'yup'; 
 import { useLocation } from 'wouter';
+import { useFlashMessage } from './FlashMessageStore';
+
+
 
 function RegisterPage() {
+
+    const {showMessage, clearMessage, getMessage} = useFlashMessage();
 
     // useLocation returns two value
     // first parameter: location => the current route URL
@@ -42,14 +47,15 @@ function RegisterPage() {
         
         try {
             await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
-            formikHelpers.setSubmitting(false); // indiate the form is not being submitted 
             // (i.e we have processed the form)
+            showMessage("Registered successfully", "success");
         } catch (e) {
-            alert("Error registeration =" + e);
+            showMessage("Error while registering: " + e, "danger");
         } finally {
             // the finally block of a try...catch will always run
             // regardless if there's any exceptions at all
             setLocation("/"); // go back to the "/" route
+            formikHelpers.setSubmitting(false); // indiate the form is not being submitted 
         }
      
     }
