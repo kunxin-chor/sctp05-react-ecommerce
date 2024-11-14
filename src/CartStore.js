@@ -13,9 +13,18 @@ const initialCart = Immutable([
     },
     {
         "id": 2,
-        "product_id": 1,
+        "product_id": 1111,
         "quantity": 10,
         "productName": "Organic Black Tea",
+        "price": 12.99,
+        "imageUrl": "https://picsum.photos/id/225/300/200",
+        "description": "Premium organic green tea leaves, rich in antioxidants and offering a smooth, refreshing taste."
+    },
+    {
+        "id": 3,
+        "product_id": 11555,
+        "quantity": 10,
+        "productName": "Organic White Tea",
         "price": 12.99,
         "imageUrl": "https://picsum.photos/id/225/300/200",
         "description": "Premium organic green tea leaves, rich in antioxidants and offering a smooth, refreshing taste."
@@ -114,7 +123,42 @@ export const useCart = () => {
         })
     }
 
+    const modifyCart = (product_id, quantity) => {
+        // 1. find the cart item with corresponding product_id
+        // 2. if it exists then continue 
+        // 3. if the quantity is reduced to 0, remove from shopping cart
+        // 4. if not, update the new quantity
+        setCart(currentCart => {
+          const existingItemIndex = currentCart.findIndex(item => item.product_id === product_id);
+
+          // check if there is a cart item with that product id
+          if (existingItemIndex !== -1) {
+            if (quantity >= 1) {
+                // change to the new quantiity
+                return currentCart.setIn([existingItemIndex, 'quantity'], quantity);
+            } else {
+                // remove the item
+                // (as normal arrays does not have a delete function, so seamless immutable does not provide one as well)
+                // so use the pure JS method to remove from an immutable array
+                return currentCart.filter( item => item.product_id !== product_id);
+            }
+          }
+        })
+    }
+
+    const deleteCartItem = (product_id) => {
+        setCart(currentCart => {
+            const existingItemIndex = currentCart.findIndex(item => item.product_id === product_id);
+            if (existingItemIndex !== -1) {
+                return currentCart.filter( item => item.product_id !== product_id)
+            } else {
+                // always returna  new value for the atom when using setCart with an arrow function as the first parameter
+                return currentCart;
+            }
+        })
+    }
+
     return {
-        getCart, getCartTotal, addToCart
+        getCart, getCartTotal, addToCart, modifyCart, deleteCartItem
     }
 }

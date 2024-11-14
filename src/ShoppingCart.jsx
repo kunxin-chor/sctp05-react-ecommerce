@@ -6,7 +6,7 @@ import { useCart} from "./CartStore";
 export default function ShoppingCart(){
 
     // get the functions that allow us access to the shopping cart's data
-    const { getCart, getCartTotal} = useCart();
+    const { getCart, getCartTotal, modifyCart, deleteCartItem} = useCart();
     const cart  = getCart();
     return <>
         <div className="container mt-4">
@@ -20,9 +20,34 @@ export default function ShoppingCart(){
                                 <div>
                                     <h5>{item.productName}</h5>
                                     <img src={item.imageUrl}/>
-                                    <p>Quantity: {item.quantity}</p>
+                                    <div className="d-flex align-items-center mt-2">
+                                        <input type="button" 
+                                               className="btn btn-sm btn-secondary me-2" 
+                                               value="-"
+                                               onClick={()=>{
+                                                modifyCart(item.product_id, item.quantity-1)
+                                               }}
+                                               
+                                        />
+                                        <p className="mb-0">Quantity: {item.quantity}</p>
+                                        <input type="button" 
+                                               className="btn btn-sm btn-secondary ms-2" 
+                                               value="+"
+                                               onClick={()=>{
+                                                modifyCart(item.product_id, item.quantity+1)
+                                               }}
+                                        />
+                                        <button className="btn btn-sm btn-danger ms-2"
+                                            onClick={()=>{
+                                                deleteCartItem(item.product_id)
+                                            }}
+                                        
+                                        >Delete</button>
+                                        
+                                    </div>
+                              
                                 </div>
-                                <span>${item.price * item.quantity}</span>
+                                <span>${(item.price * item.quantity).toFixed(2)}</span>
                             </li>
                         ))
                        }
