@@ -1,6 +1,7 @@
 import { atom, useAtom } from 'jotai'
+import Immutable from "seamless-immutable";
 
-const initialCart = [
+const initialCart = Immutable([
     {
         "id": 1,
         "product_id": 1,
@@ -19,7 +20,7 @@ const initialCart = [
         "imageUrl": "https://picsum.photos/id/225/300/200",
         "description": "Premium organic green tea leaves, rich in antioxidants and offering a smooth, refreshing taste."
     }
-]
+])
 
 // create an atom to get the current shopping cart array
 // and to update the shopping cart array
@@ -32,10 +33,12 @@ export const cartAtom = atom(initialCart); // create the atom (it like a state i
 export const useCart = () => {
     const [cart, setCart] = useAtom(cartAtom);
 
+    // getter
     const getCart = () => {
         return cart;
     }
 
+    // getter
     const getCartTotal = () => {
         // straightforward way to reduce
         // let total = 0;
@@ -48,10 +51,70 @@ export const useCart = () => {
             return total + (item.price * item.quantity)
         }, 0);
 
-        return total;
+        return total;``
+    }
+    
+    // setter/mutator/ in React state management lingo, an action
+    // an action is a process that may changes the state or involve the state somehow
+    // 
+    // Pure JavaScript approach:
+    // const addToCart = (product) => {
+    //     // 1. we need find the product already exists in the shopping cart
+    //     // - if the product already exists we should increase the quantity
+    //     // 2. if the product does not exist in the shopping cart, then we
+    //     // create a new cart item for the product
+
+    //     // the currentCart parameter in the arrow function is guaranteed to be
+    //     // the most recent one
+    //     setCart((currentCart)=>{
+    //         const existingItem = currentCart.find( item => item.product_id == product.id);
+    //         if (existingItem) {
+    //             const modifiedItem = { ...existingItem, quantity: existingItem.quantity + 1};
+    //             const clonedCart = currentCart.map(item => {
+    //                 if (item.id !== existingItem.id) {
+    //                     return item
+    //                 } else {
+    //                     return modifiedItem;
+    //                 }
+    //             } )
+    //             return clonedCart;  // <-- the new value for the `cart` atom
+    //         } else {
+    //             const newCartItem = {
+    //                 ...product,
+    //                 product_id: product.id,
+    //                 id: Math.floor(Math.random() * 10000) + 1
+    //             }
+    //             return [...currentCart, newCartItem];
+    //         }
+    //     })
+    // }
+
+    const addToCart = (product) => {
+        setCart(currentCart => {
+            const existingItemIndex = currentCart.findIndex(item => item.product_id === product.id);
+            // findIndex returns -1 if the item is not found
+            if (existingItemIndex != -1) {
+                // item exists
+                const currentQuantity = currentCart[existingItemIndex].quantity;
+                // basicially means: currentCart[existingItemIndex].quantity = currentQuantity + 1
+                return currentCart.setIn([existingItemIndex, 'quantity'], currentQuantity+1);
+
+            } else {
+                // does not exists
+                const newCartItem = {
+                    ...product,
+                    product_id: product.id,
+                    id: Math.floor(Math.random() * 10000 + 1),
+                    quantity: 1
+                }
+                // the original concat function in JavaScript Array changes the array
+                // but the Immutable version does not change the original array but instead returns a copy of the modified one
+                return currentCart.concat(newCartItem);
+            }
+        })
     }
 
     return {
-        getCart, getCartTotal
+        getCart, getCartTotal, addToCart
     }
 }

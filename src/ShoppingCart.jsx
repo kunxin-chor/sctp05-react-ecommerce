@@ -31,7 +31,7 @@ export default function ShoppingCart(){
             ) }
 
             <div className="mt-3 text-end">
-                <h4>Total: ${getCartTotal()}</h4>
+                <h4>Total: ${getCartTotal().toFixed(2)}</h4>
             </div>
 
         </div>
