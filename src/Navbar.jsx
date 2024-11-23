@@ -5,8 +5,6 @@ import { Link, useLocation } from 'wouter';
 export default function Navbar() {
 
     const [location] = useLocation(); // get the current url of the app
-    
-
     const [isNavbarOpened, setNavBarOpen] = useState(false);
 
     const handleNavButtonClick = () => {
@@ -66,6 +64,9 @@ export default function Navbar() {
                             </li>
                             <li className="nav-item">
                                 <Link className={isActiveLink("/products")} href="/products">Products</Link>
+                            </li>
+                            <li className="nav-item">
+                                <Link className={isActiveLink("/login")} href="/login">Login</Link>
                             </li>
                             <li className="nav-item">
                                 <Link className={isActiveLink("/register")} href="/register">Register</Link>

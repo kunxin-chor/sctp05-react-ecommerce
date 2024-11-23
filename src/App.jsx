@@ -5,6 +5,7 @@ import RegisterPage from './RegisterPage';
 import Navbar from './Navbar';
 import Footer from "./Footer";
 import ShoppingCart from './ShoppingCart';
+import UserLogin from './Login';
 import "./styles.css"
 import { useFlashMessage } from './FlashMessageStore';
 
@@ -46,6 +47,7 @@ return (
          <Route path="/products" component={ProductPage} />
          <Route path="/register" component={RegisterPage} />
          <Route path="/cart" component={ShoppingCart} />
+         <Route path="/login" component={UserLogin} />
       </Switch>
       <Footer/>
    

@@ -10,7 +10,7 @@ export default function ProductPage() {
         // The effect function cannot be async
         const loadData = async() => {
             // all URLs to static assets will be relative to public
-            const response  = await axios.get("products.json");
+            const response  = await axios.get(`${import.meta.env.VITE_API_URL}/api/products`);
             setProducts(response.data);
         }
         loadData();
