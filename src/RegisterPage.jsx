@@ -46,7 +46,7 @@ function RegisterPage() {
     const handleSubmit = async (values, formikHelpers) => {
         
         try {
-            await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, values);
+            await axios.post(`${import.meta.env.VITE_API_URL}/api/users/register`, values);
             // (i.e we have processed the form)
             showMessage("Registered successfully", "success");
         } catch (e) {
